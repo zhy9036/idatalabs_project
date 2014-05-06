@@ -18,20 +18,24 @@ $(document).ready(function(){
 			data: {description:$("#skill").val()},
 			cache:false,
 			success: function(html){
-				$.each(html, function(key, value){
-					var tr = document.createElement('tr');
-					$.each(value, function(key1,value1){
-						// filter data
-						if(key1 == "title" || key1 == "location" || key1 == "company"){
-							var td = document.createElement('td');
-							td.innerHTML = value1
-							tr.appendChild(td)
-						}
+				if(!jQuery.isEmptyObject(html)){
+					$.each(html, function(key, value){
+						var tr = document.createElement('tr');
+						$.each(value, function(key1,value1){
+							// filter data
+							if(key1 == "title" || key1 == "location" || key1 == "company"){
+								var td = document.createElement('td');
+								td.innerHTML = value1
+								tr.appendChild(td)
+							}
+						});
+						$("#jobtable").append(tr);
 					});
-					$("#jobtable").append(tr);
-				});
+					$("#jobtable").show();
+				}else{
+					document.getElementById("ifempty").innerHTML = "No Result Found!";
+				}
 				$("#loadingJobs").hide();
-				$("#jobtable").show();
 				
 			},
 			error: function(a, b, c) {
@@ -43,7 +47,8 @@ $(document).ready(function(){
 
 	$("#search").click(function(e){
 		e.preventDefault();
-		//reset table
+		//reset result area
+		document.getElementById("ifempty").innerHTML = "";
 		document.getElementById("jobtable").innerHTML = "";
 		var tr = document.createElement('tr');
 		tr.innerHTML = "<th>JOB TITLE</th><th>LOCATION</th><th>COMPANY</th>";
