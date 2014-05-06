@@ -23,25 +23,28 @@ def get_twitter_users(user_screen_name):
 	api = tweepy.API(auth)
 
 	#print api.rate_limit_status()
-	user = api.get_user(user_screen_name)
-	print "\n\n*************************************"
-	print "Current User: ",
-	print user.screen_name
-	print "has",
-	print user.followers_count,
-	print "follower(s)"
+	try:
+		user = api.get_user(user_screen_name)
+		print "\n\n*************************************"
+		print "Current User: ",
+		print user.screen_name
+		print "has",
+		print user.followers_count,
+		print "follower(s)"
 
-	print "\nAnd First Level of the Graph:"
-	count = 0
-	ids = api.followers_ids(user_screen_name)
-	print "count",
-	print "%-16s %s\n"%("Screen Name", "Followers Count")
-	for id in ids:
-		time.sleep(10) #slower the api access rate, in case of rate limit error
-		count += 1
-		print count, 
-		print "    %-25s %s\n"%(api.get_user(id).screen_name, api.get_user(id).followers_count), 
-	print "\n*************************************\n\n"
+		print "\nAnd First Level of the Graph:"
+		count = 0
+		ids = api.followers_ids(user_screen_name)
+		print "count",
+		print "%-16s %s\n"%("Screen Name", "Followers Count")
+		for id in ids:
+			time.sleep(10) #slower the api access rate, in case of rate limit error
+			count += 1
+			print count, 
+			print "    %-25s %s\n"%(api.get_user(id).screen_name, api.get_user(id).followers_count), 
+		print "\n*************************************\n\n"
+	except tweepy.error.TweepError:
+		print "\n>>>Sorry, Error occurred\n"
 
 	"""
 	for hello in tweepy.Cursor(api.followers, user_id = user_screen_name).items():
@@ -56,5 +59,5 @@ def get_twitter_users(user_screen_name):
 	"""
 
 #test the function
-name = raw_input("Input a id/screen_name: ")
+name = raw_input("\nInput a id/screen_name: ")
 get_twitter_users(name)
