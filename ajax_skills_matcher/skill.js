@@ -33,7 +33,7 @@ $(document).ready(function(){
 					});
 					$("#jobtable").show();
 				}else{
-					document.getElementById("ifempty").innerHTML = "No Result Found!";
+					$("#ifempty").html("No Result Found!");
 				}
 				$("#loadingJobs").hide();
 				
